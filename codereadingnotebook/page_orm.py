@@ -1,5 +1,7 @@
-# データベースへの接続
+# mysql データベースの設定
 from sqlalchemy import create_engine
+# mysql データベースに接続
+from sqlalchemy.ormy import sessionmaker
 # クラス作成
 from sqlalchemy.ext.declarative import declarative_base
 # テーブル定義
