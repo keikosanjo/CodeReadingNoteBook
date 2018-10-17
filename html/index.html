@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>test</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+$( function() {
+    $('#page').click(
+    function() {
+        var hostUrl= 'http://localhost:8000';
+        const title = $('#title').val()
+        $.ajax({
+            url: hostUrl,
+            type:'POST',
+            dataType: 'json',
+            data : title,
+            timeout:3000,
+        }).done(function(data) {
+                          alert("ok");
+        }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                         alert("error");
+        })
+    });
+} );
+</script>
+</head>
+<body>
+<h1>POSTテスト用</h1>
+<form id="page" action="#" method="post">
+    <p>ページタイトル(必須)：
+    <input type="text" id="title"></p>
+    <p><input type="submit" value="ページ作成"></p>
+</form>
+
+</html>
