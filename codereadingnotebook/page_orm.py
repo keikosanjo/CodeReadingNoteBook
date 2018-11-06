@@ -1,8 +1,8 @@
-# mysql データベースの設定
-from sqlalchemy import create_engine
-# mysql データベースに接続
-from sqlalchemy.ormy import sessionmaker
-# クラス作成
+# mysql データベースへ接続
+#from sqlalchemy import create_engine
+from sqlalchemy import *
+from sqlalchemy.orm import *
+# テーブル生成&クラスマッピングに利用
 from sqlalchemy.ext.declarative import declarative_base
 # テーブル定義
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
@@ -17,9 +17,9 @@ port = config['DATABASE']['Port']
 database_name = config['DATABASE']['Databasename']
 access_point = 'mysql://' + user_name + ':' + password + '@' + endpoint + ':' + port + '/' + database_name
 
-# 接続するデータベース
+# データベースへ接続
 engine = create_engine(access_point, echo=True)
-# クラス作成
+# Baseクラス作成(クラス定義とテーブル紐づけ)
 Base = declarative_base()
 
 class Page(Base):
@@ -30,5 +30,7 @@ class Page(Base):
     title = Column('title', String(200))
     relation_id = Column('relation_id', Integer, ForeignKey('relation.relation_id', onupdate="CASCASE", ondelete="CASCASE"))
     created_at = Column(DateTime)
-    update_at = Column(DateTime)
+    updated_at = Column(DateTime)
 
+# 上で指定したクラスを作成
+Base.metadata.create_all(engine)
