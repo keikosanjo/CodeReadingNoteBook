@@ -1,0 +1,331 @@
+swagger: "2.0"
+info:
+  description: "Code Reading Note Book API"
+  version: "2.0.0"
+  title: "API"
+  
+paths:
+  /pages:
+    post:
+      tags:
+      - "page"
+      summary: "ノートページ登録"
+      description: ""
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/page"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "parameter is invalid"
+    get:
+      tags:
+      - "page"
+      summary: "全ノートページ取得"
+      description: ""
+      consumes:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/page"
+        400:
+          description: "parameter is invalid"
+  /pages/page_id:
+    get:
+      tags:
+      - "page"
+      summary: "ノートページ取得"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema: 
+            type: "array"
+            items:
+              $ref: "#/definitions/page"
+    delete:
+      tags:
+      - "page"
+      summary: "ノートページ削除"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        description: ""
+        type: "integer"
+        required: true
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "id is invalid"
+    put:
+      tags:
+      - "page"
+      summary: "ノートページ更新"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "page_info"
+        description: "ノートページを更新"
+        required: true
+        schema:
+          $ref: "#/definitions/page"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "parameter is invalid"
+
+  /relations:
+    post:
+      tags:
+      - "relation"
+      summary: "リレーション登録"
+      description: ""
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/relation"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "integer"
+            items:
+              $ref: "#/definitions/relation"
+        400:
+          description: "parameter is invalid"
+    get:
+      tags:
+      - "relation"
+      summary: "全リレーション取得"
+      description: ""
+      consumes:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/relation"
+        400:
+          description: "parameter is invalid"
+  /relations/relation_id:
+    get:
+      tags:
+      - "relation"
+      summary: "リレーション取得"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema: 
+            type: "array"
+            items:
+              $ref: "#/definitions/relation"
+    delete:
+      tags:
+      - "relation"
+      summary: "リレーション削除"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        description: ""
+        type: "integer"
+        required: true
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "id is invalid"
+    put:
+      tags:
+      - "relation"
+      summary: "リレーション更新"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "page_info"
+        description: "リレーションを更新"
+        required: true
+        schema:
+          $ref: "#/definitions/page"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "parameter is invalid"  
+          
+  /belongs:
+    post:
+      tags:
+      - "belong"
+      summary: "belongs登録"
+      description: ""
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/belong"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "parameter is invalid"
+    get:
+      tags:
+      - "belong"
+      summary: "全belong取得"
+      description: ""
+      consumes:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/belong"
+        400:
+          description: "parameter is invalid"
+  
+  /belongs/belong_id:
+    get:
+      tags:
+      - "belong"
+      summary: "belong取得"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema: 
+            type: "array"
+            items:
+              $ref: "#/definitions/belong"
+        400:
+          description: "parameter is invalid"
+    delete:
+      tags:
+      - "belong"
+      summary: "belong削除"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        description: ""
+        type: "integer"
+        required: true
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "id is invalid"
+    put:
+      tags:
+      - "belong"
+      summary: "belong更新"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "page_info"
+        description: "belognを更新"
+        required: true
+        schema:
+          $ref: "#/definitions/page"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "parameter is invalid"
+          
+definitions:
+  page:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      belong_id:
+        type: "integer"
+        format: "int64"
+  relation:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      code_link:
+        type: "string"
+      memo:
+        type: "string"
+  belong:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      relation_order_00:
+        type: "integer"
+        format: "int64"
+      relation_order_01:
+        type: "integer"
+        format: "int64"
+      relation_order_02:
+        type: "integer"
+        format: "int64"
+      relation_order_03:
+        type: "integer"
+        format: "int64"
+      relation_order_04:
+        type: "integer"
+        format: "int64"
+      relation_order_05:
+        type: "integer"
+        format: "int64"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
+
