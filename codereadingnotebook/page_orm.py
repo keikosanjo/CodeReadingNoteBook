@@ -28,7 +28,7 @@ class Page(Base):
 
     id = Column('page_id', Integer, primary_key=True)
     title = Column('title', String(200))
-    relation_id = Column('relation_id', Integer, ForeignKey('relation.relation_id', onupdate="CASCASE", ondelete="CASCASE"))
+    belong_id = Column('belong_id', Integer, ForeignKey('belong.belong_id', onupdate="CASCASE", ondelete="CASCASE"))
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
 
