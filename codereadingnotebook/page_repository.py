@@ -5,6 +5,7 @@ from  page_orm import Page
 from sqlalchemy import *
 # セッション作成
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 #from sqlalchemy.ext.declarative import declarative_base
 # 機密情報外出し
 import configparser
@@ -15,7 +16,7 @@ password = config['DATABASE']['Password']
 endpoint = config['DATABASE']['Endpoint']
 port = config['DATABASE']['Port']
 database_name = config['DATABASE']['Databasename']
-access_point = 'mysql://' + user_name + ':' + password + '@' + endpoint + ':' + port + '/' + database_name
+access_point = 'mysql://' + user_name + ':' + password + '@' + endpoint + ':' + port + '/' + database_name + '?charset=utf8'
 import page_domain
 
 class PageRepository():
@@ -28,7 +29,7 @@ class PageRepository():
         Session = sessionmaker(bind=engine)
         self.session = Session()
 
-    #全件取得
+    #全ページ取得
     def getall(self):
         records = self.session.query(Page).all()
         pages = []
@@ -36,7 +37,7 @@ class PageRepository():
             page = page_domain.Page(
                     id = record.id,
                     title = record.title,
-                    relation_id = record.relation_id,
+                    belong_id = record.belong_id,
                     created_at = record.created_at,
                     updated_at = record.updated_at
                     )
@@ -44,7 +45,23 @@ class PageRepository():
         return pages
         #self.session.close()
 
-    #1件取得
-    def get(self,id):
-        page = self.session.query(Page).filter(Page.id==id)
+    #特定ページ取得
+    def get(self,page_id):
+        record = self.session.query(Page).filter(Page.id==page_id).one()
+        page = page_domain.Page(
+                id = record.id,
+                title = record.title,
+                belong_id = record.belong_id,
+                created_at = record.created_at,
+                updated_at = record.updated_at
+                )
         return page
+
+    #ページ登録
+    def post(self,title,belong_id):
+       now_time = datetime.now()
+       page = Page(id=null, title=title, belong_id=belong_id, created_at=now_time, updated_at=now_time)
+
+       self.session.add(page)
+       self.session.commit()
+

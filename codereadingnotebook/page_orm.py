@@ -15,7 +15,7 @@ password = config['DATABASE']['Password']
 endpoint = config['DATABASE']['Endpoint']
 port = config['DATABASE']['Port']
 database_name = config['DATABASE']['Databasename']
-access_point = 'mysql://' + user_name + ':' + password + '@' + endpoint + ':' + port + '/' + database_name
+access_point = 'mysql://' + user_name + ':' + password + '@' + endpoint + ':' + port + '/' + database_name + '?charset=utf8'
 
 # データベースへ接続
 engine = create_engine(access_point, echo=True)
