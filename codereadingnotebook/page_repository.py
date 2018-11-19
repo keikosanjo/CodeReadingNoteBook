@@ -1,7 +1,6 @@
 # 各テーブルのorm
 from orm import *
 # mysql データベースへ接続
-#from sqlalchemy import create_engine
 from sqlalchemy import *
 # セッション作成
 from sqlalchemy.orm import sessionmaker
