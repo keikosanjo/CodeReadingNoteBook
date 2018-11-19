@@ -22,6 +22,16 @@ engine = create_engine(access_point, echo=True)
 # Baseクラス作成(クラス定義とテーブル紐づけ)
 Base = declarative_base()
 
+class Relation(Base):
+    # マッピングするテーブル
+    __tablename__ = 'relation'
+
+    id = Column('id', Integer, primary_key=True)
+    code_link = Column('code_link', Text)
+    memo = Column('memo', Text)
+    created_at = Column(DateTime)
+    update_at = Column(DateTime)
+
 class Belong(Base):
     # マッピングするテーブル
     __tablename__ = 'belong'
