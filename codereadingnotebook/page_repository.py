@@ -6,7 +6,6 @@ from sqlalchemy import *
 # セッション作成
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
-#from sqlalchemy.ext.declarative import declarative_base
 # 機密情報外出し
 import configparser
 config = configparser.ConfigParser()
@@ -23,8 +22,6 @@ class PageRepository():
     def __init__(self,url):
         # データベースへ接続
         engine = create_engine(url)
-        #Base = declarative_base()
-        #Base.metadata.bind=engine
         # セッション作成
         Session = sessionmaker(bind=engine)
         self.session = Session()
@@ -65,8 +62,20 @@ class PageRepository():
     #ページ登録
     def post(self,title,belong_id):
        now_time = datetime.now()
-       page = Page(id=null, title=title, belong_id=belong_id, created_at=now_time, updated_at=now_time)
-
+       page = Page(id=0, title=title, belong_id=belong_id, created_at=now_time, updated_at=now_time)
        self.session.add(page)
        self.session.commit()
 
+    #特定ページ削除
+    def delete(self, page_id):
+        page = self.session.query(Page).filter(Page.id==page_id).one()
+        self.session.delete(page)
+        
+    #ページ更新
+    def put(self,page_id,title):
+        now_time = datetime.now()
+        page = self.session.query(Page).filter(Page.id==page_id).one()
+        page.title = title
+        page.updated_at = now_time
+        self.session.commit()
+        return page
