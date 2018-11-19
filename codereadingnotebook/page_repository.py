@@ -1,5 +1,5 @@
-# pageテーブルのorm
-from  page_orm import Page
+# 各テーブルのorm
+from orm import *
 # mysql データベースへ接続
 #from sqlalchemy import create_engine
 from sqlalchemy import *
@@ -42,6 +42,11 @@ class PageRepository():
                     updated_at = record.updated_at
                     )
             pages.append(page)
+            print(page.id)
+            print(page.title)
+            print(page.belong_id)
+            print(page.created_at)
+            print(page.updated_at)
         return pages
         #self.session.close()
 
