@@ -29,8 +29,6 @@ class Relation(Base):
     id = Column('id', Integer, primary_key=True)
     code_link = Column('code_link', Text)
     memo = Column('memo', Text)
-    created_at = Column(DateTime)
-    update_at = Column(DateTime)
 
 class Belong(Base):
     # マッピングするテーブル
