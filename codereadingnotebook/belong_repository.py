@@ -54,10 +54,6 @@ class BelongRepository():
                     relation_order_20 = record.relation_order_20
                     )
             belongs.append(belong)
-            print(belong.id)
-            print(belong.relation_order_00)
-            print(belong.relation_order_01)
-            print(belong.relation_order_02)
         return belongs
         #self.session.close()
 
@@ -88,10 +84,6 @@ class BelongRepository():
                     relation_order_19 = record.relation_order_19,
                     relation_order_20 = record.relation_order_20
                 )
-        print(belong.id)
-        print(belong.relation_order_00)
-        print(belong.relation_order_01)
-        print(belong.relation_order_02)
         return belong
 
     #belong登録
