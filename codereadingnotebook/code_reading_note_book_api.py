@@ -21,7 +21,7 @@ app.config['JSON_AS_ASCII'] = True
 def test():
     return "hello world!"
 
-#ページ取得API
+#全ページ取得API
 @app.route('/pages',methods=['GET'])
 def getall_pages():
     page_repository = PageRepository(access_point)
@@ -36,7 +36,27 @@ def getall_pages():
         'content-type':'application/json'
     }
     return jsonify(res),200 
-    
+
+#特定ページ取得API
+@app.route('/pages/<page_id>',methods=['GET'])
+def get_page(page_id):
+    page_repository = PageRepository(access_point)
+    page = page_repository.get(page_id)
+    res = {'page':[]}
+    d = page.__dict__
+    d['created_at'] = page.created_at.strftime('%Y-%m-%dT%H:%M:%S')
+    d['updated_at'] = page.updated_at.strftime('%Y-%m-%dT%H:%M:%S')
+    res['page'].append(d)
+    headers = {
+        'content-type':'application/json'
+    }
+    return jsonify(res),200
+
+#ページ作成API
+@app.route('/pages',methods=['POST'])
+def post_page():
+    page_repository = PageRepository(access_point)
+    page = page_repository.post()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
