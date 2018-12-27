@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding:utf-8 -*-
-from flask import Flask, request, jsonify, Response
+from flask import Flask, jsonify
 from page_repository import PageRepository
 import json
 # 機密情報外出し
@@ -26,7 +26,6 @@ def test():
 def getall_pages():
     page_repository = PageRepository(access_point)
     pages = page_repository.getall()
-    pages = pages.decode("utf-8")
     res = {'pages':[]}
     for page in pages:
         d = page.__dict__
@@ -36,7 +35,7 @@ def getall_pages():
     headers = {
         'content-type':'application/json'
     }
-    return Response(response=json.dumps(str(res).decode("string-escape")), status=200, headers=headers)
+    return jsonify(res),200 
     
 
 if __name__ == '__main__':
