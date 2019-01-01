@@ -58,6 +58,7 @@ class RelationRepository():
     def delete(self, relation_id):
         relation = self.session.query(Relation).filter(Relation.id==relation_id).one()
         self.session.delete(relation)
+        self.session.commit()
         
     #relation更新
     def put(self, relation_id, code_link, memo):

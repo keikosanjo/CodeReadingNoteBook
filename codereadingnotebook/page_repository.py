@@ -30,6 +30,8 @@ class PageRepository():
         records = self.session.query(Page).all()
         pages = []
         for record in records:
+            print(record.id)
+            print(record.belong_id)
             page = page_domain.Page(
                     id = record.id,
                     title = record.title,
@@ -64,6 +66,7 @@ class PageRepository():
     def delete(self, page_id):
         page = self.session.query(Page).filter(Page.id==page_id).one()
         self.session.delete(page)
+        self.session.commit()
         
     #ページ更新
     def put(self,page_id,title):

@@ -96,6 +96,7 @@ class BelongRepository():
     def delete(self, belong_id):
         belong = self.session.query(Belong).filter(Belong.id==belong_id).one()
         self.session.delete(belong)
+        self.session.commit()
         
     #ページ更新
     def put(self, belong_id, relation_order_00, relation_order_01, relation_order_02, relation_order_03, relation_order_04, relation_order_05, relation_order_06, relation_order_07, relation_order_08, relation_order_09, relation_order_10, relation_order_11, relation_order_12, relation_order_13, relation_order_14, relation_order_15, relation_order_16, relation_order_17, relation_order_18,relation_order_19, relation_order_20):
