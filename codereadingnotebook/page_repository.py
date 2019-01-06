@@ -30,8 +30,6 @@ class PageRepository():
         records = self.session.query(Page).all()
         pages = []
         for record in records:
-            print(record.id)
-            print(record.belong_id)
             page = page_domain.Page(
                     id = record.id,
                     title = record.title,
