@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding:utf-8 -*-
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from page_repository import PageRepository
 import json
 # 機密情報外出し
@@ -32,9 +32,9 @@ def getall_pages():
         d['created_at'] = page.created_at.strftime('%Y-%m-%dT%H:%M:%S')
         d['updated_at'] = page.updated_at.strftime('%Y-%m-%dT%H:%M:%S')
         res['pages'].append(d)
-    headers = {
-        'content-type':'application/json'
-    }
+    #headers = {
+    #    'content-type':'application/json'
+    #}
     return jsonify(res),200 
 
 #特定ページ取得API
@@ -47,16 +47,19 @@ def get_page(page_id):
     d['created_at'] = page.created_at.strftime('%Y-%m-%dT%H:%M:%S')
     d['updated_at'] = page.updated_at.strftime('%Y-%m-%dT%H:%M:%S')
     res['page'].append(d)
-    headers = {
-        'content-type':'application/json'
-    }
+    #headers = {
+    #    'content-type':'application/json'
+    #}
     return jsonify(res),200
 
 #ページ作成API
 @app.route('/pages',methods=['POST'])
 def post_page():
+    title = request.args.get('title','')
+    belong_id = request.args.get('belong_id','')
     page_repository = PageRepository(access_point)
-    page = page_repository.post()
+    page = page_repository.post(title,belong_id)
+    return request.data
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
