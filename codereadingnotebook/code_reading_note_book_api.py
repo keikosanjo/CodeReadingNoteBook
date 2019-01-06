@@ -68,5 +68,13 @@ def delete_page(page_id):
     page = page_repository.delete(page_id)
     return jsonify({'status':'OK'})
 
+#ページ更新API
+@app.route('/pages/<page_id>', methods=['PUT'])
+def put_page(page_id):
+    title = request.values.get('title','')
+    page_repository = PageRepository(access_point)
+    page = page_repository.put(page_id,title)
+    return request.data
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
