@@ -71,14 +71,20 @@ def delete_page(page_id):
 #ページ更新API
 @app.route('/pages/<page_id>', methods=['PUT'])
 def put_page(page_id):
-    title = request.values.get('title','')
     page_repository = PageRepository(access_point)
+    page = page_repository.get(page_id)
+    if request.values.get('title') is not None:
+        title = request.values.get('title')
+    else:
+        title = page.title
     page = page_repository.put(page_id,title)
     return request.data
 
 #################
 ## belong関連  ##
 #################
+
+numbers = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]
 
 #全belong取得API
 @app.route('/belongs',methods=['GET'])
@@ -104,27 +110,8 @@ def get_belong(belong_id):
 #belong作成API
 @app.route('/belongs',methods=['POST'])
 def post_belong():
-    relation_order_00 = request.args.get('relation_order_00')
-    relation_order_01 = request.args.get('relation_order_01')
-    relation_order_02 = request.args.get('relation_order_02')
-    relation_order_03 = request.args.get('relation_order_03')
-    relation_order_04 = request.args.get('relation_order_04')
-    relation_order_05 = request.args.get('relation_order_05')
-    relation_order_06 = request.args.get('relation_order_06')
-    relation_order_07 = request.args.get('relation_order_07')
-    relation_order_08 = request.args.get('relation_order_08')
-    relation_order_09 = request.args.get('relation_order_09')
-    relation_order_10 = request.args.get('relation_order_10')
-    relation_order_11 = request.args.get('relation_order_11')
-    relation_order_12 = request.args.get('relation_order_12')
-    relation_order_13 = request.args.get('relation_order_13')
-    relation_order_14 = request.args.get('relation_order_14')
-    relation_order_15 = request.args.get('relation_order_15')
-    relation_order_16 = request.args.get('relation_order_16')
-    relation_order_17 = request.args.get('relation_order_17')
-    relation_order_18 = request.args.get('relation_order_18')
-    relation_order_19 = request.args.get('relation_order_19')
-    relation_order_20 = request.args.get('relation_order_20')
+    for i in numbers:
+        globals()["relation_order_" + str(i)] = request.args.get('relation_order_%s'%i)
     belong_repository = BelongRepository(access_point)
     belong = belong_repository.post(relation_order_00, relation_order_01, relation_order_02, relation_order_03, relation_order_04, relation_order_05, relation_order_06, relation_order_07, relation_order_08, relation_order_09, relation_order_10, relation_order_11, relation_order_12, relation_order_13, relation_order_14, relation_order_15, relation_order_16, relation_order_17, relation_order_18, relation_order_19, relation_order_20)
     return request.data
@@ -139,28 +126,14 @@ def delete_belong(belong_id):
 #belong更新API
 @app.route('/belongs/<belong_id>', methods=['PUT'])
 def put_belong(belong_id):
-    relation_order_00 = request.values.get('relation_order_00', None)
-    relation_order_01 = request.values.get('relation_order_01', None)
-    relation_order_02 = request.values.get('relation_order_02', None)
-    relation_order_03 = request.values.get('relation_order_03', None)
-    relation_order_04 = request.values.get('relation_order_04', None)
-    relation_order_05 = request.values.get('relation_order_05', None)
-    relation_order_06 = request.values.get('relation_order_06', None)
-    relation_order_07 = request.values.get('relation_order_07', None)
-    relation_order_08 = request.values.get('relation_order_08', None)
-    relation_order_09 = request.values.get('relation_order_09', None)
-    relation_order_10 = request.values.get('relation_order_10', None)
-    relation_order_11 = request.values.get('relation_order_11', None)
-    relation_order_12 = request.values.get('relation_order_12', None)
-    relation_order_13 = request.values.get('relation_order_13', None)
-    relation_order_14 = request.values.get('relation_order_14', None)
-    relation_order_15 = request.values.get('relation_order_15', None)
-    relation_order_16 = request.values.get('relation_order_16', None)
-    relation_order_17 = request.values.get('relation_order_17', None)
-    relation_order_18 = request.values.get('relation_order_18', None)
-    relation_order_19 = request.values.get('relation_order_19', None)
-    relation_order_20 = request.values.get('relation_order_20', None)
     belong_repository = BelongRepository(access_point)
+    belong = belong_repository.get(belong_id)
+    for i in numbers:
+        if request.values.get('relation_order_%s'%i) is not None:
+            globals()["relation_order_" + str(i)] = request.values.get('relation_order_%s'%i)
+        else:
+            globals()["relation_order_" + str(i)] = "belong.relation_order_%s"%i
+    relation_order_20 = request.values.get('relation_order_20', None)
     belong = belong_repository.put(belong_id, relation_order_00, relation_order_01, relation_order_02, relation_order_03, relation_order_04, relation_order_05, relation_order_06, relation_order_07, relation_order_08, relation_order_09, relation_order_10, relation_order_11, relation_order_12, relation_order_13, relation_order_14, relation_order_15, relation_order_16, relation_order_17, relation_order_18, relation_order_19, relation_order_20)
     return request.data
 
@@ -208,9 +181,16 @@ def delete_relation(relation_id):
 #relation更新API
 @app.route('/relations/<relation_id>', methods=['PUT'])
 def put_relation(relation_id):
-    code_link = request.values.get('code_link','')
-    memo = request.values.get('memo','')
     relation_repository = RelationRepository(access_point)
+    relation = relation_repository.get(relation_id)
+    if request.values.get('code_link') is not None:
+        code_link = request.values.get('code_link')
+    else:
+        code_link = relation.code_link
+    if request.values.get('memo') is not None:
+        memo = request.values.get('memo')
+    else:
+        memo = relation.memo
     relation = relation_repository.put(relation_id,code_link,memo)
     return request.data
 
