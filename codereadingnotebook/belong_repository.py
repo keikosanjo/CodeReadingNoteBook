@@ -5,9 +5,6 @@ from sqlalchemy import *
 # セッション作成
 from sqlalchemy.orm import sessionmaker
 import belong_domain
-from mysql_access_point import AccessPoint
-get_access_point = AccessPoint()
-access_point = get_access_point.end_point
 
 class BelongRepository():
     def __init__(self,url):

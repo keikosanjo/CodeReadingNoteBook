@@ -6,9 +6,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import page_domain
-from mysql_access_point import AccessPoint
-get_access_point = AccessPoint()
-access_point = get_access_point.end_point
 
 class PageRepository():
     def __init__(self,url):
