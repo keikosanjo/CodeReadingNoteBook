@@ -6,16 +6,9 @@ from sqlalchemy.orm import *
 from sqlalchemy.ext.declarative import declarative_base
 # テーブル定義
 from sqlalchemy import Column, Integer, ForeignKey, String, Text, DateTime
-# 機密情報外出し
-import configparser
-config = configparser.ConfigParser()
-config.read('../config.py')
-user_name = config['DATABASE']['Username']
-password = config['DATABASE']['Password']
-endpoint = config['DATABASE']['Endpoint']
-port = config['DATABASE']['Port']
-database_name = config['DATABASE']['Databasename']
-access_point = 'mysql://' + user_name + ':' + password + '@' + endpoint + ':' + port + '/' + database_name + '?charset=utf8'
+from mysql_access_point import AccessPoint
+get_access_point = AccessPoint()
+access_point = get_access_point.end_point
 
 # データベースへ接続
 engine = create_engine(access_point, echo=True)

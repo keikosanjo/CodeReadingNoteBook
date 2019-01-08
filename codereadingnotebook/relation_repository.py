@@ -4,17 +4,10 @@ from orm import *
 from sqlalchemy import *
 # セッション作成
 from sqlalchemy.orm import sessionmaker
-# 機密情報外出し
-import configparser
-config = configparser.ConfigParser()
-config.read('../config.py')
-user_name = config['DATABASE']['Username']
-password = config['DATABASE']['Password']
-endpoint = config['DATABASE']['Endpoint']
-port = config['DATABASE']['Port']
-database_name = config['DATABASE']['Databasename']
-access_point = 'mysql://' + user_name + ':' + password + '@' + endpoint + ':' + port + '/' + database_name + '?charset=utf8'
 import relation_domain
+from mysql_access_point import AccessPoint
+get_access_point = AccessPoint()
+access_point = get_access_point.end_point
 
 class RelationRepository():
     def __init__(self,url):
