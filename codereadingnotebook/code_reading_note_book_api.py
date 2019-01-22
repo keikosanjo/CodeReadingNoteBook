@@ -5,6 +5,10 @@ from page_repository import PageRepository
 from belong_repository import BelongRepository
 from relation_repository import RelationRepository
 import json
+import configparser
+config = configparser.ConfigParser()
+config.read('../config.py')
+endpoint = config['SERVER']['Endpoint']
 from mysql_access_point import AccessPoint
 get_access_point = AccessPoint()
 access_point = get_access_point.end_point
@@ -25,25 +29,27 @@ def test():
 def getall_pages():
     page_repository = PageRepository(access_point)
     pages = page_repository.getall()
+    headers = {'Access-Control-Allow-Origin':endpoint}
     res = {'pages':[]}
     for page in pages:
         d = page.__dict__
         d['created_at'] = page.created_at.strftime('%Y-%m-%dT%H:%M:%S')
         d['updated_at'] = page.updated_at.strftime('%Y-%m-%dT%H:%M:%S')
         res['pages'].append(d)
-    return jsonify(res),200 
+    return jsonify(res),200,headers
 
 #特定ページ取得API
 @app.route('/pages/<page_id>',methods=['GET'])
 def get_page(page_id):
     page_repository = PageRepository(access_point)
     page = page_repository.get(page_id)
+    headers = {'Access-Control-Allow-Origin':endpoint}
     res = {'page':[]}
     d = page.__dict__
     d['created_at'] = page.created_at.strftime('%Y-%m-%dT%H:%M:%S')
     d['updated_at'] = page.updated_at.strftime('%Y-%m-%dT%H:%M:%S')
     res['page'].append(d)
-    return jsonify(res),200
+    return jsonify(res),200,headers
 
 #ページ作成API
 @app.route('/pages',methods=['POST'])
@@ -52,26 +58,28 @@ def post_page():
     belong_id = request.args.get('belong_id','')
     page_repository = PageRepository(access_point)
     page = page_repository.post(title,belong_id)
-    return request.data
+    return request.data,headers
 
 #特定ページ削除API
 @app.route('/pages/<page_id>', methods=['DELETE'])
 def delete_page(page_id):
     page_repository = PageRepository(access_point)
     page = page_repository.delete(page_id)
-    return jsonify({'status':'OK'})
+    headers = {'Access-Control-Allow-Origin':endpoint}
+    return jsonify({'status':'OK'}),headers
 
 #ページ更新API
 @app.route('/pages/<page_id>', methods=['PUT'])
 def put_page(page_id):
     page_repository = PageRepository(access_point)
     page = page_repository.get(page_id)
+    headers = {'Access-Control-Allow-Origin':endpoint}
     if request.values.get('title') is not None:
         title = request.values.get('title')
     else:
         title = page.title
     page = page_repository.put(page_id,title)
-    return request.data
+    return request.data,headers
 
 #################
 ## belong関連  ##
@@ -84,21 +92,23 @@ numbers = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11
 def getall_belongs():
     belong_repository = BelongRepository(access_point)
     belongs = belong_repository.getall()
+    headers = {'Access-Control-Allow-Origin':endpoint}
     res = {'belongs':[]}
     for belong in belongs:
         d = belong.__dict__
         res['belongs'].append(d)
-    return jsonify(res),200 
+    return jsonify(res),200,headers 
 
 #特定belong取得API
 @app.route('/belongs/<belong_id>',methods=['GET'])
 def get_belong(belong_id):
     belong_repository = BelongRepository(access_point)
     belong = belong_repository.get(belong_id)
+    headers = {'Access-Control-Allow-Origin':endpoint}
     res = {'belong':[]}
     d = belong.__dict__
     res['belong'].append(d)
-    return jsonify(res),200
+    return jsonify(res),200,headers
 
 #belong作成API
 @app.route('/belongs',methods=['POST'])
@@ -107,20 +117,23 @@ def post_belong():
         globals()["relation_order_" + str(i)] = request.args.get('relation_order_%s'%i)
     belong_repository = BelongRepository(access_point)
     belong = belong_repository.post(relation_order_00, relation_order_01, relation_order_02, relation_order_03, relation_order_04, relation_order_05, relation_order_06, relation_order_07, relation_order_08, relation_order_09, relation_order_10, relation_order_11, relation_order_12, relation_order_13, relation_order_14, relation_order_15, relation_order_16, relation_order_17, relation_order_18, relation_order_19, relation_order_20)
-    return request.data
+    headers = {'Access-Control-Allow-Origin':endpoint}
+    return request.data,headers
 
 #特定belong削除API
 @app.route('/belongs/<belong_id>', methods=['DELETE'])
 def delete_belong(belong_id):
     belong_repository = BelongRepository(access_point)
     belong = belong_repository.delete(belong_id)
-    return jsonify({'status':'OK'})
+    headers = {'Access-Control-Allow-Origin':endpoint}
+    return jsonify({'status':'OK'}),headers
 
 #belong更新API
 @app.route('/belongs/<belong_id>', methods=['PUT'])
 def put_belong(belong_id):
     belong_repository = BelongRepository(access_point)
     belong = belong_repository.get(belong_id)
+    headers = {'Access-Control-Allow-Origin':endpoint}
     if request.values.get('relation_order_00') is not None:
         relation_order_00 = request.values.get('relation_order_00')
     else:
@@ -206,7 +219,7 @@ def put_belong(belong_id):
     else:
         relation_order_20 = belong.relation_order_20
     belong = belong_repository.put(belong_id, relation_order_00, relation_order_01, relation_order_02, relation_order_03, relation_order_04, relation_order_05, relation_order_06, relation_order_07, relation_order_08, relation_order_09, relation_order_10, relation_order_11, relation_order_12, relation_order_13, relation_order_14, relation_order_15, relation_order_16, relation_order_17, relation_order_18, relation_order_19, relation_order_20)
-    return request.data
+    return request.data,headers
 
 ####################
 ##  relation関連  ##
@@ -217,21 +230,23 @@ def put_belong(belong_id):
 def getall_relations():
     relation_repository = RelationRepository(access_point)
     relations = relation_repository.getall()
+    headers = {'Access-Control-Allow-Origin':endpoint}
     res = {'relations':[]}
     for relation in relations:
         d = relation.__dict__
         res['relations'].append(d)
-    return jsonify(res),200 
+    return jsonify(res),200,headers 
 
 #特定relation取得API
 @app.route('/relations/<relation_id>',methods=['GET'])
 def get_relation(relation_id):
     relation_repository = RelationRepository(access_point)
     relation = relation_repository.get(relation_id)
+    headers = {'Access-Control-Allow-Origin':endpoint}
     res = {'relation':[]}
     d = relation.__dict__
     res['relation'].append(d)
-    return jsonify(res),200
+    return jsonify(res),200,headers
 
 #relation作成API
 @app.route('/relations',methods=['POST'])
@@ -240,20 +255,23 @@ def post_relation():
     memo = request.args.get('memo','')
     relation_repository = RelationRepository(access_point)
     relation = relation_repository.post(code_link,memo)
-    return request.data
+    headers = {'Access-Control-Allow-Origin':endpoint}
+    return request.data,headers
 
 #特定relation削除API
 @app.route('/relations/<relation_id>', methods=['DELETE'])
 def delete_relation(relation_id):
     relation_repository = RelationRepository(access_point)
     relation = relation_repository.delete(relation_id)
-    return jsonify({'status':'OK'})
+    headers = {'Access-Control-Allow-Origin':endpoint}
+    return jsonify({'status':'OK'}),headers
 
 #relation更新API
 @app.route('/relations/<relation_id>', methods=['PUT'])
 def put_relation(relation_id):
     relation_repository = RelationRepository(access_point)
     relation = relation_repository.get(relation_id)
+    headers = {'Access-Control-Allow-Origin':endpoint}
     if request.values.get('code_link') is not None:
         code_link = request.values.get('code_link')
     else:
@@ -263,7 +281,7 @@ def put_relation(relation_id):
     else:
         memo = relation.memo
     relation = relation_repository.put(relation_id,code_link,memo)
-    return request.data
+    return request.data,headers
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

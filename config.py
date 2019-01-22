@@ -4,3 +4,5 @@ Password =
 Endpoint = 
 Port = 
 Databasename = 
+[SERVER]
+Endpoint = 
